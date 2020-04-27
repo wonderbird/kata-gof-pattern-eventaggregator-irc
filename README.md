@@ -6,7 +6,9 @@ In this kata you implement the Gang Of Four Event Aggregator Pattern [[1](#ref-1
 
 tbd
 
-Draft idea: Add a chat module to your application similar to the original Internet Relay Chat (IRC) [3](#ref-3).
+Draft idea
+
+An application shall provide a chat module similar to the original Internet Relay Chat (IRC) [3](#ref-3). It will allow users to see how many other users are using the system. Users have to pay for the time they were logged in and for the number of messages they have sent.
 
 ## Requirements
 
