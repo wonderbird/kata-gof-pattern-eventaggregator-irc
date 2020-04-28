@@ -6,8 +6,9 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public BillingAppService(EventAggregator eventAggregator, IMessageView messageView)
         {
-            eventAggregator.Subscribe<LoginMessage>(this);
-            eventAggregator.Subscribe<LogoutMessage>(this);
+            eventAggregator.Subscribe(this);
+            //eventAggregator.Subscribe<LoginMessage>(this);
+            //eventAggregator.Subscribe<LogoutMessage>(this);
             _messageView = messageView;
         }
 

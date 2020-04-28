@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace kata_gof_pattern_eventaggregator_irc
 {
@@ -9,13 +10,15 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public void Publish<T>(T message)
         {
-            var type = typeof(T);
-            if (!_subscribers.ContainsKey(type))
+            TODO: Adapt Publish to the implementation in the example
+
+            var subscriberType = typeof(ISubscriber<>).MakeGenericType(typeof(T));
+            if (!_subscribers.ContainsKey(subscriberType))
             {
                 return;
             }
 
-            var subscribersForType = _subscribers[type];
+            var subscribersForType = _subscribers[subscriberType];
             foreach (var subscriber in subscribersForType)
             {
                 var castSubscriber = (ISubscriber<T>) subscriber;
@@ -23,12 +26,25 @@ namespace kata_gof_pattern_eventaggregator_irc
             }
         }
 
-        public void Subscribe<T>(ISubscriber<T> subscriber)
+        public void Subscribe(object subscriber)
         {
-            var type = typeof(T);
-            var subscriberList = new List<object>();
-            subscriberList.Add(subscriber);
-            _subscribers.Add(type, subscriberList);
+            TODO: Create a requirement enforcing thread safety as in the example
+
+            var subscriberTypes = subscriber.GetType().GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISubscriber<>));
+
+            foreach (var subscriberType in subscriberTypes)
+            {
+                List<object> subscribersForType;
+
+                if (!_subscribers.TryGetValue(subscriberType, out subscribersForType))
+                {
+                    subscribersForType = new List<object>();
+                    _subscribers.Add(subscriberType, subscribersForType);
+                }
+
+                subscribersForType.Add(subscriber);
+            }
         }
     }
 }

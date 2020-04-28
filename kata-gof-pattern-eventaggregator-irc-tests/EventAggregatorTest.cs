@@ -10,6 +10,8 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void BillingView_UserLogsIn_ShowsLoginTimestamp()
         {
+            TODO: Cleanup code duplication in Tests
+
             var timestamp = DateTime.Now;
             var username = "username";
 
