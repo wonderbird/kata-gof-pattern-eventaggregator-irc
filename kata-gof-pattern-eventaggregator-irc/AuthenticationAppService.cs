@@ -20,5 +20,15 @@ namespace kata_gof_pattern_eventaggregator_irc
             };
             _eventAggregator.Publish(message);
         }
+
+        public void Logout(string username, DateTime timestamp)
+        {
+            var message = new LogoutMessage
+            {
+                Username = username,
+                Timestamp = timestamp
+            };
+            _eventAggregator.Publish(message);
+        }
     }
 }
