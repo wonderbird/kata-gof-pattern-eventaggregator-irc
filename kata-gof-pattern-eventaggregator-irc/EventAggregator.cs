@@ -10,7 +10,7 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public void Publish<T>(T message)
         {
-            TODO: Adapt Publish to the implementation in the example
+            // TODO: Adapt Publish to the implementation in the example
 
             var subscriberType = typeof(ISubscriber<>).MakeGenericType(typeof(T));
             if (!_subscribers.ContainsKey(subscriberType))
@@ -28,7 +28,7 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public void Subscribe(object subscriber)
         {
-            TODO: Create a requirement enforcing thread safety as in the example
+            // TODO: Create a requirement enforcing thread safety as in the example
 
             var subscriberTypes = subscriber.GetType().GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISubscriber<>));
