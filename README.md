@@ -4,22 +4,27 @@ In this kata you implement the Gang Of Four Event Aggregator Pattern [[1](#ref-1
 
 ## Problem Description
 
-An application shall provide a chat module similar to the original Internet Relay Chat (IRC) [[3](#ref-3)]. It will allow users to see how many other users are using the system. Users have to pay for the time they were logged in and for the number of messages they have sent.
+An application shall provide a chat module similar to the original Internet Relay Chat (IRC) [[3](#ref-3)]. It will allow users to send messages to other users. A billing module records the time users have been logged in and the number of messages they have sent. A monitoring module shows how many users are logged in at the same time.
 
-## Program structure
+## Intended Application Structure
 
-The program shall be composed of the following components:
+In order to implement the Event Aggregator Pattern, the program shall be composed of the following components:
 
 ![Event Aggregator Pattern](EventAggregatorPattern.png)
 
 - **AuthenticationAppService** allows users to login and logout
-- **MessageAppService** allows a user to send a message to another user
+- **MessageAppService** allows a user to send a message from one to another user
 - **EventAggregator** is the message hub as described by the Event Aggregator Pattern
-- **ISubscriber** specifies the method a subscriber implements to receive events from the EventAggregator
+- **ISubscriber** specifies the method a subscriber has to implement in order to receive events from the EventAggregator
 - **BillingAppService** shows login and logout timestamp for each user
-- **UserAppService** displays messages sent by a different user to the current user
+- **UserAppService** displays messages sent by another user to the current user
 - **MonitoringAppService** shows system status information
 - **IMessageView** is a helper class which collects all string messages intended for being displayed in a view to the user interface. This interface can be mocked in a unit test in order to ensure that the messages are rendered correctly. All App Services hold an instance of this interface for communicating with the user interface. This class is not necessary for the Event Aggregator Pattern, it is just used to simplify the application.
+
+## Hint
+
+- Keep the implementation as minimal as possible in order to keep the kata small. Just fulfill the requirements
+- Use TDD. Tests first. Red, Green, Refactor.
 
 ## Requirements
 
