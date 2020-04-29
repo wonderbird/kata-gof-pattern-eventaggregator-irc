@@ -10,15 +10,24 @@ Draft idea
 
 An application shall provide a chat module similar to the original Internet Relay Chat (IRC) [[3](#ref-3)]. It will allow users to see how many other users are using the system. Users have to pay for the time they were logged in and for the number of messages they have sent.
 
+## Program structure
+
+The program shall be composed of the following components:
+
+- **AuthenticationAppService** allows users to login and logout
+- **BillingAppService** records login and logout timestamp for each user
+- **UserAppService** manages information displayed to the user
+- **IMessageView** sends string messages intended for being displayed in a view to the rendering engine. This interface can be mocked in a unit test in order to ensure that the messages are rendered correctly. All App Services hold an instance of this interface for communicating with the user interface.
+
 ## Requirements
 
-tbd
 
 Draft:
 - For a billing view record the user's login timestamp
 - For a billing view record the user's logout timestamp
+- Allow a user to see when another user has logged in
+- Allow a user to see when another user has logged out
 - For a billing view record the number of messages sent by the user
-- Allow user to see how many other users are currently logged into the chat
 - For a monitoring view record the number of users logged in at the same time
 - For a monitoring view record the number of messages sent in the past time interval (for demo: 1 second)
 
