@@ -4,36 +4,31 @@ In this kata you implement the Gang Of Four Event Aggregator Pattern [[1](#ref-1
 
 ## Problem Description
 
-tbd
-
-Draft idea
-
 An application shall provide a chat module similar to the original Internet Relay Chat (IRC) [[3](#ref-3)]. It will allow users to see how many other users are using the system. Users have to pay for the time they were logged in and for the number of messages they have sent.
 
 ## Program structure
 
 The program shall be composed of the following components:
 
+![Event Aggregator Pattern](EventAggregatorPattern.png)
+
 - **AuthenticationAppService** allows users to login and logout
-- **BillingAppService** records login and logout timestamp for each user
-- **UserAppService** manages information displayed to the user
-- **IMessageView** sends string messages intended for being displayed in a view to the rendering engine. This interface can be mocked in a unit test in order to ensure that the messages are rendered correctly. All App Services hold an instance of this interface for communicating with the user interface.
+- **MessageAppService** allows a user to send a message to another user
+- **EventAggregator** is the message hub as described by the Event Aggregator Pattern
+- **ISubscriber** specifies the method a subscriber implements to receive events from the EventAggregator
+- **BillingAppService** shows login and logout timestamp for each user
+- **UserAppService** displays messages sent by a different user to the current user
+- **MonitoringAppService** shows system status information
+- **IMessageView** is a helper class which collects all string messages intended for being displayed in a view to the user interface. This interface can be mocked in a unit test in order to ensure that the messages are rendered correctly. All App Services hold an instance of this interface for communicating with the user interface. This class is not necessary for the Event Aggregator Pattern, it is just used to simplify the application.
 
 ## Requirements
 
-
-Draft:
 - For a billing view record the user's login timestamp
 - For a billing view record the user's logout timestamp
 - Allow a user to see when another user has logged in
 - Allow a user to see when another user has logged out
 - For a billing view record the number of messages sent by the user
 - For a monitoring view record the number of users logged in at the same time
-- For a monitoring view record the number of messages sent in the past time interval (for demo: 1 second)
-
-## Suggested Test Cases
-
-tbd
 
 ## Finishing Touches
 

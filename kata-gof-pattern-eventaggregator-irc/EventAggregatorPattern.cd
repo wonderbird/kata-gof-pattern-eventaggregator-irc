@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="kata_gof_pattern_eventaggregator_irc.EventAggregator">
+    <Position X="2.5" Y="2.25" Width="1.5" />
+    <Members>
+      <Field Name="_subscribers" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAACAAAAA=</HashCode>
+      <FileName>EventAggregator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="kata_gof_pattern_eventaggregator_irc.UserAppService" Collapsed="true">
+    <Position X="2.5" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserAppService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="kata_gof_pattern_eventaggregator_irc.BillingAppService" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAACAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BillingAppService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="kata_gof_pattern_eventaggregator_irc.MessageAppService">
+    <Position X="4.25" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="_eventAggregator" Hidden="true" />
+      <Field Name="_messageView" Hidden="true" />
+      <Method Name="MessageAppService" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MessageAppService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="kata_gof_pattern_eventaggregator_irc.MonitoringAppService" Collapsed="true">
+    <Position X="4.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MonitoringAppService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="kata_gof_pattern_eventaggregator_irc.AuthenticationAppService">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="_eventAggregator" Hidden="true" />
+      <Method Name="AuthenticationAppService" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAIAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>AuthenticationAppService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="kata_gof_pattern_eventaggregator_irc.ISubscriber&lt;T&gt;">
+    <Position X="4.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ISubscriber.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

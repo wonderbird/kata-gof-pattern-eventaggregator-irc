@@ -1,14 +1,16 @@
 namespace kata_gof_pattern_eventaggregator_irc
 {
-    public class BillingAppService : ISubscriber<LoginMessage>, ISubscriber<LogoutMessage>
+    public class BillingAppService : 
+        ISubscriber<LoginMessage>,
+        ISubscriber<LogoutMessage>,
+        ISubscriber<UserMessage>
     {
         private readonly IMessageView _messageView;
+        private int _userMessageCount;
 
         public BillingAppService(EventAggregator eventAggregator, IMessageView messageView)
         {
             eventAggregator.Subscribe(this);
-            //eventAggregator.Subscribe<LoginMessage>(this);
-            //eventAggregator.Subscribe<LogoutMessage>(this);
             _messageView = messageView;
         }
 
@@ -26,6 +28,12 @@ namespace kata_gof_pattern_eventaggregator_irc
             var logString = $"{message.Username} logged out at {timestampString}";
 
             _messageView.Add(logString);
+        }
+
+        public void Consume(UserMessage message)
+        {
+            _userMessageCount++;
+            _messageView.Add($"{message.From} has sent {_userMessageCount} message(s)");
         }
     }
 }
