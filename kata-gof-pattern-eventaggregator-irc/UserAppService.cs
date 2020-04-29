@@ -21,5 +21,7 @@ namespace kata_gof_pattern_eventaggregator_irc
             var messageString = $"User {message.Username} logged out";
             _messagesView.Add(messageString);
         }
+
+        TODO: Show messages sent by another user
     }
 }

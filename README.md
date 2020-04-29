@@ -32,6 +32,7 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 - For a billing view record the user's logout timestamp
 - Allow a user to see when another user has logged in
 - Allow a user to see when another user has logged out
+- Allow a user to see a message sent by another user
 - For a billing view record the number of messages sent by the user
 - For a monitoring view record the number of users logged in at the same time
 
