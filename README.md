@@ -28,13 +28,17 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 
 ## Requirements
 
-- For a billing view record the user's login timestamp
-- For a billing view record the user's logout timestamp
-- Allow a user to see when another user has logged in
-- Allow a user to see when another user has logged out
-- Allow a user to see a message sent by another user
-- For a billing view record the number of messages sent by the user
-- For a monitoring view record the number of users logged in at the same time
+- The BillingAppService records the user's login timestamp
+- The BillingAppService records the user's logout timestamp
+- The UserAppService shows when another user has logged in
+- The UserAppService shows when another user has logged out
+- The UserAppService shows messages sent by users
+- The BillingAppService records the number of messages sent by the user
+- The MonitoringAppService records the number of users logged in at the same time
+
+## Non-functional Arguments
+
+  - Allow 1000 users (= UserAppService instances) opening the app at the same time (i.e. 1000 Subscribe requests from different threads to the EventAggregator within 1 second).
 
 ## Finishing Touches
 
