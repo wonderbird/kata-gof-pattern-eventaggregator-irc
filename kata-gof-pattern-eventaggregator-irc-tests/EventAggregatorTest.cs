@@ -14,6 +14,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         private readonly EventAggregator _eventAggregator;
         private readonly AuthenticationAppService _authService;
         private readonly Mock<IMessageView> _messagesMock;
+        private readonly MessageAppService _messageService;
 
         public EventAggregatorTest()
         {
@@ -25,6 +26,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
             _eventAggregator = new EventAggregator();
 
             _authService = new AuthenticationAppService(_eventAggregator);
+            _messageService = new MessageAppService(_eventAggregator);
         }
 
         [Fact]
@@ -50,10 +52,9 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
             _messagesMock.Setup(x => x.Add(Capture.In(messageArgs)));
 
             var billingService = new BillingAppService(_eventAggregator, _messagesMock.Object);
-            var messageService = new MessageAppService(_eventAggregator, _messagesMock.Object);
-            messageService.Send("Hello World", _username, "bob");
-            messageService.Send("Hello World", _username, "bob");
-            messageService.Send("Hello World", _username, "bob");
+            _messageService.Send("Hello World", _username, "bob");
+            _messageService.Send("Hello World", _username, "bob");
+            _messageService.Send("Hello World", _username, "bob");
 
             Assert.Equal(new[]
             {
@@ -77,6 +78,14 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
             var userService = new UserAppService(_eventAggregator, _messagesMock.Object);
             _authService.Logout(_username, _timestamp);
             _messagesMock.Verify(x => x.Add($"User {_username} logged out"));
+        }
+
+        [Fact]
+        public void UsersView_OtherSendsMessage_ShowsMessage()
+        {
+            var userService = new UserAppService(_eventAggregator, _messagesMock.Object);
+            _messageService.Send("Hello World", _username, "bob");
+            _messagesMock.Verify(x => x.Add($"{_username}: Hello World"));
         }
 
         [Fact]

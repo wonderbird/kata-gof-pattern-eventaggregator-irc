@@ -1,6 +1,9 @@
 namespace kata_gof_pattern_eventaggregator_irc
 {
-    public class UserAppService : ISubscriber<LoginMessage>, ISubscriber<LogoutMessage>
+    public class UserAppService :
+        ISubscriber<LoginMessage>,
+        ISubscriber<LogoutMessage>,
+        ISubscriber<UserMessage>
     {
         private readonly IMessageView _messagesView;
 
@@ -22,6 +25,10 @@ namespace kata_gof_pattern_eventaggregator_irc
             _messagesView.Add(messageString);
         }
 
-        TODO: Show messages sent by another user
+        public void Consume(UserMessage message)
+        {
+            var messageString = $"{message.From}: {message.Message}";
+            _messagesView.Add(messageString);
+        }
     }
 }
