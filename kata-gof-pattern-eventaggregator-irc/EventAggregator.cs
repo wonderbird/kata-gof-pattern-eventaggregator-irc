@@ -6,7 +6,7 @@ namespace kata_gof_pattern_eventaggregator_irc
 {
     public class EventAggregator
     {
-        private readonly Dictionary<Type, List<object>> _subscribers = new Dictionary<Type, List<object>>();
+        private readonly Dictionary<Type, List<WeakReference>> _subscribers = new Dictionary<Type, List<WeakReference>>();
 
         private readonly object _lock = new object();
 
@@ -15,7 +15,7 @@ namespace kata_gof_pattern_eventaggregator_irc
             // TODO: Adapt Publish to the implementation in the example
 
             var subscriberType = typeof(ISubscriber<>).MakeGenericType(typeof(T));
-            List<object> subscribersForType;
+            List<WeakReference> subscribersForType;
             lock (_lock)
             {
                 if (!_subscribers.ContainsKey(subscriberType))
@@ -28,8 +28,11 @@ namespace kata_gof_pattern_eventaggregator_irc
 
             foreach (var subscriber in subscribersForType)
             {
-                var castSubscriber = (ISubscriber<T>) subscriber;
-                castSubscriber.Consume(message);
+                if (subscriber.IsAlive)
+                {
+                    var castSubscriber = (ISubscriber<T>) subscriber.Target;
+                    castSubscriber.Consume(message);
+                }
             }
         }
 
@@ -42,15 +45,15 @@ namespace kata_gof_pattern_eventaggregator_irc
             {
                 foreach (var subscriberType in subscriberTypes)
                 {
-                    List<object> subscribersForType;
+                    List<WeakReference> subscribersForType;
 
                     if (!_subscribers.TryGetValue(subscriberType, out subscribersForType))
                     {
-                        subscribersForType = new List<object>();
+                        subscribersForType = new List<WeakReference>();
                         _subscribers.Add(subscriberType, subscribersForType);
                     }
 
-                    subscribersForType.Add(subscriber);
+                    subscribersForType.Add(new WeakReference(subscriber));
                 }
             }
         }
