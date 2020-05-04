@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("kata-gof-pattern-eventaggregator-irc-tests")]
 
 namespace kata_gof_pattern_eventaggregator_irc
 {
@@ -40,6 +43,7 @@ namespace kata_gof_pattern_eventaggregator_irc
                 subscribersForType = _subscribers[subscriberType];
             }
 
+            var subscribersToRemove = new List<WeakReference>();
             foreach (var subscriber in subscribersForType)
             {
                 if (subscriber.IsAlive)
@@ -47,10 +51,16 @@ namespace kata_gof_pattern_eventaggregator_irc
                     var castSubscriber = (ISubscriber<T>) subscriber.Target;
                     castSubscriber.Consume(message);
                 }
+                else
+                {
+                    subscribersToRemove.Add(subscriber);
+                }
             }
+
+            //subscribersForType.RemoveAll(subscriber => subscribersToRemove.Contains(subscriber));
         }
 
-        private List<WeakReference> GetSubscribers(Type subscriberType)
+        internal List<WeakReference> GetSubscribers(Type subscriberType)
         {
             List<WeakReference> subscribersForType;
 

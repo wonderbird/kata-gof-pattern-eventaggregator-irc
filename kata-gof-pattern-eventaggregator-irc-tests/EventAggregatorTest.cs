@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using kata_gof_pattern_eventaggregator_irc;
 using Moq;
 using Xunit;
@@ -112,5 +113,31 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
             }, messageArgs);
         }
 
+        [Fact]
+        public void EventAggregatorPublish_SubscriberIsDisposed_RemovesSubscriber()
+        {
+            using (var subscriberStub = new DisposableSubscriber()) {
+                _eventAggregator.Subscribe(subscriberStub);
+            }
+            GC.Collect();
+
+            TODO: Wait for the garbage collection to happen (https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/notifications)
+
+            var subscribers = _eventAggregator.GetSubscribers(typeof(ISubscriber<string>));
+
+            Assert.True(subscribers.All(subscriber => subscriber.IsAlive));
+        }
+    }
+
+    public class DisposableSubscriber : ISubscriber<string>, IDisposable
+    {
+        public void Dispose()
+        {
+        }
+
+        public void Consume(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
