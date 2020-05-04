@@ -8,17 +8,24 @@ namespace kata_gof_pattern_eventaggregator_irc
     {
         private readonly Dictionary<Type, List<object>> _subscribers = new Dictionary<Type, List<object>>();
 
+        private readonly object _lock = new object();
+
         public void Publish<T>(T message)
         {
             // TODO: Adapt Publish to the implementation in the example
 
             var subscriberType = typeof(ISubscriber<>).MakeGenericType(typeof(T));
-            if (!_subscribers.ContainsKey(subscriberType))
+            List<object> subscribersForType;
+            lock (_lock)
             {
-                return;
+                if (!_subscribers.ContainsKey(subscriberType))
+                {
+                    return;
+                }
+
+                subscribersForType = _subscribers[subscriberType];
             }
 
-            var subscribersForType = _subscribers[subscriberType];
             foreach (var subscriber in subscribersForType)
             {
                 var castSubscriber = (ISubscriber<T>) subscriber;
@@ -28,22 +35,23 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public void Subscribe(object subscriber)
         {
-            // TODO: Create a requirement enforcing thread safety as in the example
-
             var subscriberTypes = subscriber.GetType().GetInterfaces()
                 .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISubscriber<>));
 
-            foreach (var subscriberType in subscriberTypes)
+            lock (_lock)
             {
-                List<object> subscribersForType;
-
-                if (!_subscribers.TryGetValue(subscriberType, out subscribersForType))
+                foreach (var subscriberType in subscriberTypes)
                 {
-                    subscribersForType = new List<object>();
-                    _subscribers.Add(subscriberType, subscribersForType);
-                }
+                    List<object> subscribersForType;
 
-                subscribersForType.Add(subscriber);
+                    if (!_subscribers.TryGetValue(subscriberType, out subscribersForType))
+                    {
+                        subscribersForType = new List<object>();
+                        _subscribers.Add(subscriberType, subscribersForType);
+                    }
+
+                    subscribersForType.Add(subscriber);
+                }
             }
         }
     }
