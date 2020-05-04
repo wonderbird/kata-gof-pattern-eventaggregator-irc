@@ -40,6 +40,7 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 
 - Allow 10000 users (= UserAppService instances) opening the app at the same time, i.e. 10000 Subscribe requests from different threads to the EventAggregator within 1 second.
 - Ensure that the EventAggregator does not prevent objects from being garbage collected, i.e. use WeakReference to store the subscribers instead of object references.
+- Ensure that dead WeakReferences are removed from the subscribers list.
 
 ## Finishing Touches
 

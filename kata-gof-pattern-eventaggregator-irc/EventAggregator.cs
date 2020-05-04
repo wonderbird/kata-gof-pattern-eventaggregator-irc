@@ -10,10 +10,24 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         private readonly object _lock = new object();
 
+        public void Subscribe(object subscriber)
+        {
+            var subscriberTypes = subscriber.GetType().GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISubscriber<>));
+
+            lock (_lock)
+            {
+                var weakReference = new WeakReference(subscriber);
+                foreach (var subscriberType in subscriberTypes)
+                {
+                    var subscribers = GetSubscribers(subscriberType);
+                    subscribers.Add(weakReference);
+                }
+            }
+        }
+
         public void Publish<T>(T message)
         {
-            // TODO: Adapt Publish to the implementation in the example
-
             var subscriberType = typeof(ISubscriber<>).MakeGenericType(typeof(T));
             List<WeakReference> subscribersForType;
             lock (_lock)
@@ -36,26 +50,21 @@ namespace kata_gof_pattern_eventaggregator_irc
             }
         }
 
-        public void Subscribe(object subscriber)
+        private List<WeakReference> GetSubscribers(Type subscriberType)
         {
-            var subscriberTypes = subscriber.GetType().GetInterfaces()
-                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISubscriber<>));
+            List<WeakReference> subscribersForType;
 
             lock (_lock)
             {
-                foreach (var subscriberType in subscriberTypes)
+                var found = _subscribers.TryGetValue(subscriberType, out subscribersForType);
+                if (!found)
                 {
-                    List<WeakReference> subscribersForType;
-
-                    if (!_subscribers.TryGetValue(subscriberType, out subscribersForType))
-                    {
-                        subscribersForType = new List<WeakReference>();
-                        _subscribers.Add(subscriberType, subscribersForType);
-                    }
-
-                    subscribersForType.Add(new WeakReference(subscriber));
+                    subscribersForType = new List<WeakReference>();
+                    _subscribers.Add(subscriberType, subscribersForType);
                 }
             }
+
+            return subscribersForType;
         }
     }
 }
