@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using kata_gof_pattern_eventaggregator_irc;
 using Moq;
 using Xunit;
@@ -118,14 +120,15 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         {
             using (var subscriberStub = new DisposableSubscriber()) {
                 _eventAggregator.Subscribe(subscriberStub);
+                subscriberStub.Dispose();
             }
+
             GC.Collect();
 
-            TODO: Wait for the garbage collection to happen (https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/notifications)
-
+            _eventAggregator.Publish("Hello World");
             var subscribers = _eventAggregator.GetSubscribers(typeof(ISubscriber<string>));
 
-            Assert.True(subscribers.All(subscriber => subscriber.IsAlive));
+            Assert.Empty(subscribers);
         }
     }
 
@@ -137,7 +140,6 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
 
         public void Consume(string message)
         {
-            throw new NotImplementedException();
         }
     }
 }

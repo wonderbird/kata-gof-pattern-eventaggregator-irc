@@ -57,7 +57,7 @@ namespace kata_gof_pattern_eventaggregator_irc
                 }
             }
 
-            //subscribersForType.RemoveAll(subscriber => subscribersToRemove.Contains(subscriber));
+            subscribersForType.RemoveAll(subscriber => subscribersToRemove.Contains(subscriber));
         }
 
         internal List<WeakReference> GetSubscribers(Type subscriberType)

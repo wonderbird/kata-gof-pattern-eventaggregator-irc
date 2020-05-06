@@ -1,5 +1,7 @@
 # IRC
 
+![Build Status Badge](https://github.com/wonderbird/kata-gof-pattern-eventaggregator-irc/workflows/.NET%20Core/badge.svg)
+
 In this kata you implement the Gang Of Four Event Aggregator Pattern [[1](#ref-1), [2](#ref-2)].
 
 ## Problem Description
