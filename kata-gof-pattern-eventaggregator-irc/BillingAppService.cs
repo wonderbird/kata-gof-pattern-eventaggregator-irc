@@ -1,6 +1,6 @@
 namespace kata_gof_pattern_eventaggregator_irc
 {
-    public class BillingAppService : 
+    public class BillingAppService :
         ISubscriber<LoginMessage>,
         ISubscriber<LogoutMessage>,
         ISubscriber<UserMessage>

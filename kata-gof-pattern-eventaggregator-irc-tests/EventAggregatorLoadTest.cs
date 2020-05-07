@@ -11,14 +11,6 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
 {
     public class EventAggregatorLoadTest
     {
-        private const double SecondsBeforeFailing = 1.0;
-
-        private EventAggregator _eventAggregator;
-        private Mock<IMessageView> _messagesMock;
-        private List<string> _messageArgs;
-        private MessageAppService _messageService;
-        private ManualResetEvent _synchronizedStartEvent;
-
         public EventAggregatorLoadTest()
         {
             _messagesMock = new Mock<IMessageView>();
@@ -31,15 +23,31 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
 
             _synchronizedStartEvent = new ManualResetEvent(false);
         }
+
+        private const double SecondsBeforeFailing = 1.0;
+
+        private readonly EventAggregator _eventAggregator;
+        private readonly Mock<IMessageView> _messagesMock;
+        private readonly List<string> _messageArgs;
+        private readonly MessageAppService _messageService;
+        private readonly ManualResetEvent _synchronizedStartEvent;
+
+        private UserAppService CreateUserAppService(Mock<IMessageView> messagesMock)
+        {
+            _synchronizedStartEvent.WaitOne(TimeSpan.FromSeconds(SecondsBeforeFailing));
+
+            var userService = new UserAppService(_eventAggregator, messagesMock.Object);
+            return userService;
+        }
+
         [Fact]
-        public void When_10000_consumers_register_with_EventAggregator_from_diffeent_threads_THEN_All_consumers_receive_all_messages()
+        public void
+            When_10000_consumers_register_with_EventAggregator_from_diffeent_threads_THEN_All_consumers_receive_all_messages()
         {
             var numberOfUserServices = 10000;
             var tasks = new Task<UserAppService>[numberOfUserServices];
             for (var index = 0; index < numberOfUserServices; index++)
-            {
                 tasks[index] = Task.Factory.StartNew(() => CreateUserAppService(_messagesMock));
-            }
 
             _synchronizedStartEvent.Set();
             Task.WaitAll(tasks);
@@ -54,14 +62,6 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
 
             // Use the userService in order to prevent compiler from optimizing the userService away.
             userServices.ForEach(Assert.NotNull);
-        }
-
-        private UserAppService CreateUserAppService(Mock<IMessageView> messagesMock)
-        {
-            _synchronizedStartEvent.WaitOne(TimeSpan.FromSeconds(SecondsBeforeFailing));
-
-            var userService = new UserAppService(_eventAggregator, messagesMock.Object);
-            return userService;
         }
     }
 }

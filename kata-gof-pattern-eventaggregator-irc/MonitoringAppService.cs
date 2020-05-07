@@ -5,7 +5,7 @@ namespace kata_gof_pattern_eventaggregator_irc
     public class MonitoringAppService : ISubscriber<LoginMessage>, ISubscriber<LogoutMessage>
     {
         private readonly IMessageView _messagesView;
-        private HashSet<string> _loggedInUsers = new HashSet<string>();
+        private readonly HashSet<string> _loggedInUsers = new HashSet<string>();
 
         public MonitoringAppService(EventAggregator eventAggregator, IMessageView messagesView)
         {

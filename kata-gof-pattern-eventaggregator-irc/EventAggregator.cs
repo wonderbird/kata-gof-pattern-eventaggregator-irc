@@ -9,9 +9,10 @@ namespace kata_gof_pattern_eventaggregator_irc
 {
     public class EventAggregator
     {
-        private readonly Dictionary<Type, List<WeakReference>> _subscribers = new Dictionary<Type, List<WeakReference>>();
-
         private readonly object _lock = new object();
+
+        private readonly Dictionary<Type, List<WeakReference>> _subscribers =
+            new Dictionary<Type, List<WeakReference>>();
 
         public void Subscribe(object subscriber)
         {
@@ -35,17 +36,13 @@ namespace kata_gof_pattern_eventaggregator_irc
             List<WeakReference> subscribersForType;
             lock (_lock)
             {
-                if (!_subscribers.ContainsKey(subscriberType))
-                {
-                    return;
-                }
+                if (!_subscribers.ContainsKey(subscriberType)) return;
 
                 subscribersForType = _subscribers[subscriberType];
             }
 
             var subscribersToRemove = new List<WeakReference>();
             foreach (var subscriber in subscribersForType)
-            {
                 if (subscriber.IsAlive)
                 {
                     var castSubscriber = (ISubscriber<T>) subscriber.Target;
@@ -55,7 +52,6 @@ namespace kata_gof_pattern_eventaggregator_irc
                 {
                     subscribersToRemove.Add(subscriber);
                 }
-            }
 
             subscribersForType.RemoveAll(subscriber => subscribersToRemove.Contains(subscriber));
         }

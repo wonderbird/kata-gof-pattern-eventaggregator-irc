@@ -40,15 +40,20 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 
 ## Non-functional Requirements
 
+### Thread Safety
+
 - Allow 10000 users (= UserAppService instances) opening the app at the same time, i.e. 10000 Subscribe requests from different threads to the EventAggregator within 1 second.
-- Ensure that the EventAggregator does not prevent objects from being garbage collected, i.e. use WeakReference to store the subscribers instead of object references.
-- Ensure that dead WeakReferences are removed from the subscribers list.
+
+### Memory Leak Prevention
+
+- The EventAggregator must not prevent objects from being garbage collected, i.e. use WeakReference to store the subscribers instead of object references.
+- Dead WeakReferences must be removed from the subscribers list.
 
 ## Finishing Touches
 
 - Avoid duplicated code (use `tools\dupfinder.bat`).
 - Fix all static code analysis warnings.
-- Check the Cyclomatic Complexity of your source code files. For me, the most complex class hat a value of (tbd) and the most complex method has a value of (tbd). See Visual Studio -> Analyze -> Calculate Code Metrics.
+- Check the Cyclomatic Complexity of your source code files. For me, the most complex class hat a value of (9 - EventAggregator) and the most complex method has a value of (4 - EventAggregator.Publish). See Visual Studio -> Analyze -> Calculate Code Metrics.
 
 ## References
 

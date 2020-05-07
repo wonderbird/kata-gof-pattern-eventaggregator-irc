@@ -11,7 +11,7 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public void Send(string message, string from, string to)
         {
-            _eventAggregator.Publish(new UserMessage { From = from, To = to, Message = message });
+            _eventAggregator.Publish(new UserMessage {From = from, To = to, Message = message});
         }
     }
 }
