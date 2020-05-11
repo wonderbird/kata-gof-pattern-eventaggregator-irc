@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace kata_gof_pattern_eventaggregator_irc
 {
-    public class EventAggregator
+    public class EventAggregator : IEventAggregator
     {
         private readonly object _lock = new object();
 

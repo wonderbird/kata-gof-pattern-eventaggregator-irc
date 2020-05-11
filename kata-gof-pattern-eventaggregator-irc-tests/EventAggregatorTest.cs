@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using kata_gof_pattern_eventaggregator_irc;
 using Moq;
+using Unity;
 using Xunit;
 
 namespace kata_gof_pattern_eventaggregator_irc_tests
@@ -14,15 +15,19 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
             _timestampString = _timestamp.ToString(Settings.TimeStampFormat);
 
             _username = "username";
-            
+
             _messagesMock = new Mock<IMessageView>();
             _messageArgs = new List<string>();
             _messagesMock.Setup(x => x.Add(Capture.In(_messageArgs)));
 
             _eventAggregator = new EventAggregator();
+            
+            _container = new UnityContainer();
+            _container.RegisterInstance<IEventAggregator>(_eventAggregator, InstanceLifetime.Singleton);
+            _container.RegisterInstance<IMessageView>(_messagesMock.Object, InstanceLifetime.Singleton);
 
-            _authService = new AuthenticationAppService(_eventAggregator);
-            _messageService = new MessageAppService(_eventAggregator);
+            _authService = _container.Resolve<AuthenticationAppService>();
+            _messageService = _container.Resolve<MessageAppService>();
         }
 
         private readonly DateTime _timestamp;
@@ -32,13 +37,13 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         private readonly AuthenticationAppService _authService;
         private readonly Mock<IMessageView> _messagesMock;
         private readonly MessageAppService _messageService;
-        private readonly EventAggregatorMemoryLeakTest _eventAggregatorMemoryLeakTest;
-        private List<string> _messageArgs;
+        private readonly List<string> _messageArgs;
+        private readonly UnityContainer _container;
 
         [Fact]
         public void BillingView_UserLogsIn_ShowsLoginTimestamp()
         {
-            var billingService = new BillingAppService(_eventAggregator, _messagesMock.Object);
+            var billingService = _container.Resolve<BillingAppService>();
             _authService.Login(_username, _timestamp);
             _messagesMock.Verify(x => x.Add($"{_username} logged in at {_timestampString}"));
         }
@@ -46,7 +51,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void BillingView_UserLogsOut_ShowsLogoutTimestamp()
         {
-            var billingService = new BillingAppService(_eventAggregator, _messagesMock.Object);
+            var billingService = _container.Resolve<BillingAppService>();
             _authService.Logout(_username, _timestamp);
             _messagesMock.Verify(x => x.Add($"{_username} logged out at {_timestampString}"));
         }
@@ -54,7 +59,8 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void BillingView_UserSendsMessage_ShowsMessageCountForUser()
         {
-            var billingService = new BillingAppService(_eventAggregator, _messagesMock.Object);
+            var billingService = _container.Resolve<BillingAppService>();
+
             _messageService.Send("Hello World", _username, "bob");
             _messageService.Send("Hello World", _username, "bob");
             _messageService.Send("Hello World", _username, "bob");
@@ -70,7 +76,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void MonitoringView_UsersLogInAndOut_CountsNumberOfLoggedInUsers()
         {
-            var monitoringService = new MonitoringAppService(_eventAggregator, _messagesMock.Object);
+            var monitoringService = _container.Resolve<MonitoringAppService>();
 
             _authService.Login(_username + "1", _timestamp);
             _authService.Login(_username + "1", _timestamp);
@@ -91,7 +97,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void UsersView_OtherSendsMessage_ShowsMessage()
         {
-            var userService = new UserAppService(_eventAggregator, _messagesMock.Object);
+            var userService = _container.Resolve<UserAppService>();
             _messageService.Send("Hello World", _username, "bob");
             _messagesMock.Verify(x => x.Add($"{_username}: Hello World"));
         }
@@ -99,7 +105,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void UsersView_OtherUserLogsIn_ShowsUserLogin()
         {
-            var userService = new UserAppService(_eventAggregator, _messagesMock.Object);
+            var userService = _container.Resolve<UserAppService>();
             _authService.Login(_username, _timestamp);
             _messagesMock.Verify(x => x.Add($"User {_username} logged in"));
         }
@@ -107,7 +113,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         [Fact]
         public void UsersView_OtherUserLogsOut_ShowsUserLogout()
         {
-            var userService = new UserAppService(_eventAggregator, _messagesMock.Object);
+            var userService = _container.Resolve<UserAppService>();
             _authService.Logout(_username, _timestamp);
             _messagesMock.Verify(x => x.Add($"User {_username} logged out"));
         }

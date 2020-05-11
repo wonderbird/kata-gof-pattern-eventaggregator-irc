@@ -8,7 +8,7 @@ namespace kata_gof_pattern_eventaggregator_irc
         private readonly IMessageView _messageView;
         private int _userMessageCount;
 
-        public BillingAppService(EventAggregator eventAggregator, IMessageView messageView)
+        public BillingAppService(IEventAggregator eventAggregator, IMessageView messageView)
         {
             eventAggregator.Subscribe(this);
             _messageView = messageView;

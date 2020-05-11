@@ -4,9 +4,9 @@ namespace kata_gof_pattern_eventaggregator_irc
 {
     public class AuthenticationAppService
     {
-        private readonly EventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
-        public AuthenticationAppService(EventAggregator eventAggregator)
+        public AuthenticationAppService(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }

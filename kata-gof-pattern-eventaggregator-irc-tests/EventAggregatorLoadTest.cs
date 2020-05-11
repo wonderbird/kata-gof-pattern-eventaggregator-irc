@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using kata_gof_pattern_eventaggregator_irc;
 using Moq;
+using Unity;
 using Xunit;
 
 namespace kata_gof_pattern_eventaggregator_irc_tests
@@ -13,30 +14,36 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
     {
         public EventAggregatorLoadTest()
         {
+            _synchronizedStartEvent = new ManualResetEvent(false);
+            
             _messagesMock = new Mock<IMessageView>();
             _messageArgs = new List<string>();
             _messagesMock.Setup(x => x.Add(Capture.In(_messageArgs)));
 
             _eventAggregator = new EventAggregator();
 
-            _messageService = new MessageAppService(_eventAggregator);
+            _container = new UnityContainer();
+            _container.RegisterInstance<IEventAggregator>(_eventAggregator, InstanceLifetime.Singleton);
+            _container.RegisterInstance<IMessageView>(_messagesMock.Object, InstanceLifetime.Singleton);
 
-            _synchronizedStartEvent = new ManualResetEvent(false);
+            _messageService = _container.Resolve<MessageAppService>();
+
         }
 
         private const double SecondsBeforeFailing = 1.0;
 
-        private readonly EventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
         private readonly Mock<IMessageView> _messagesMock;
         private readonly List<string> _messageArgs;
         private readonly MessageAppService _messageService;
         private readonly ManualResetEvent _synchronizedStartEvent;
+        private readonly UnityContainer _container;
 
         private UserAppService CreateUserAppService(Mock<IMessageView> messagesMock)
         {
             _synchronizedStartEvent.WaitOne(TimeSpan.FromSeconds(SecondsBeforeFailing));
 
-            var userService = new UserAppService(_eventAggregator, messagesMock.Object);
+            var userService = _container.Resolve<UserAppService>();
             return userService;
         }
 

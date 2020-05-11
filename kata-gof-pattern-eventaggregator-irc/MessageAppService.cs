@@ -2,9 +2,9 @@ namespace kata_gof_pattern_eventaggregator_irc
 {
     public class MessageAppService
     {
-        private readonly EventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
-        public MessageAppService(EventAggregator eventAggregator)
+        public MessageAppService(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
         }
