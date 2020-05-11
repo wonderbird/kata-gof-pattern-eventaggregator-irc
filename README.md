@@ -55,6 +55,15 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 - Fix all static code analysis warnings.
 - Check the Cyclomatic Complexity of your source code files. For me, the most complex class has a value of (9 - EventAggregator) and the most complex method has a value of (4 - EventAggregator.Publish). See Visual Studio -> Analyze -> Calculate Code Metrics.
 
+## About the Solution
+
+This repository provides 2 solution approaches in two branches:
+
+| Branch            | Description |
+| :-----            | :---------- |
+| `master`         | shows how to implement the kata without tools. |
+| `ioc-container` | uses the Unity.Container inversion of control container to simplify creating the event aggregator and obtaining the reference to it. |
+
 ## References
 
 <a name="ref-1">[1]</a> David Starr and others: "Event Aggregator" in "Pluralsight: Design Patterns Library", https://www.pluralsight.com/courses/patterns-library, last visited on Apr. 23, 2020.
