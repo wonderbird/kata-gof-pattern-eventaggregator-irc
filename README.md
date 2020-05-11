@@ -53,7 +53,7 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 
 - Avoid duplicated code (use `tools\dupfinder.bat`).
 - Fix all static code analysis warnings.
-- Check the Cyclomatic Complexity of your source code files. For me, the most complex class hat a value of (9 - EventAggregator) and the most complex method has a value of (4 - EventAggregator.Publish). See Visual Studio -> Analyze -> Calculate Code Metrics.
+- Check the Cyclomatic Complexity of your source code files. For me, the most complex class has a value of (9 - EventAggregator) and the most complex method has a value of (4 - EventAggregator.Publish). See Visual Studio -> Analyze -> Calculate Code Metrics.
 
 ## References
 
