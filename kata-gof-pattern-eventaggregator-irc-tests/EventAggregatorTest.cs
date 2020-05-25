@@ -32,8 +32,7 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         private readonly AuthenticationAppService _authService;
         private readonly Mock<IMessageView> _messagesMock;
         private readonly MessageAppService _messageService;
-        private readonly EventAggregatorMemoryLeakTest _eventAggregatorMemoryLeakTest;
-        private List<string> _messageArgs;
+        private readonly List<string> _messageArgs;
 
         [Fact]
         public void BillingView_UserLogsIn_ShowsLoginTimestamp()
