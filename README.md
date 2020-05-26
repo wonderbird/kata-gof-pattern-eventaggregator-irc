@@ -1,10 +1,16 @@
 # IRC
 
-| master | ioc-container |
-| :----- | :------------ |
-| ![Build status of master branch](https://github.com/wonderbird/kata-gof-pattern-eventaggregator-irc/workflows/.NET%20Core/badge.svg?branch=master) | ![Build status ioc-container branch](https://github.com/wonderbird/kata-gof-pattern-eventaggregator-irc/workflows/.NET%20Core/badge.svg?branch=ioc-container) |
-
 In this kata you implement the Gang Of Four Event Aggregator Pattern [[1](#ref-1), [2](#ref-2)].
+
+## About the Solution
+
+This repository provides 3 solution approaches, each in its own branch:
+
+| Branch                     | Build Status | Description |
+| :-----                     | :----------- | :---------- |
+| `master`                  | ![Build status of master branch](https://github.com/wonderbird/kata-gof-pattern-eventaggregator-irc/workflows/.NET%20Core/badge.svg?branch=master) | shows how to implement the kata without tools. |
+| `ioc-container`          | ![Build status ioc-container branch](https://github.com/wonderbird/kata-gof-pattern-eventaggregator-irc/workflows/.NET%20Core/badge.svg?branch=ioc-container) | uses the Unity.Container inversion of control container to simplify creating the event aggregator and obtaining the reference to it. |
+| `prism-eventaggregator` | ![Build status prism-eventaggregator branch](https://github.com/wonderbird/kata-gof-pattern-eventaggregator-irc/workflows/.NET%20Core/badge.svg?branch=prism-eventaggregator) | uses the Unity.Container inversion of control container plus the prism EventAggregator [[4](#ref-4)]. |
 
 ## Problem Description
 
@@ -57,15 +63,6 @@ In order to implement the Event Aggregator Pattern, the program shall be compose
 - Fix all static code analysis warnings.
 - Check the Cyclomatic Complexity of your source code files. For me, the most complex class has a value of (9 - EventAggregator) and the most complex method has a value of (4 - EventAggregator.Publish). See Visual Studio -> Analyze -> Calculate Code Metrics.
 
-## About the Solution
-
-This repository provides 2 solution approaches in two branches:
-
-| Branch            | Description |
-| :-----            | :---------- |
-| `master`         | shows how to implement the kata without tools. |
-| `ioc-container` | uses the Unity.Container inversion of control container to simplify creating the event aggregator and obtaining the reference to it. |
-
 ## References
 
 <a name="ref-1">[1]</a> David Starr and others: "Event Aggregator" in "Pluralsight: Design Patterns Library", https://www.pluralsight.com/courses/patterns-library, last visited on Apr. 23, 2020.
@@ -73,3 +70,5 @@ This repository provides 2 solution approaches in two branches:
 <a name="ref-2">[2]</a> Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides: "Design Patterns: Elements of Reusable Object-Oriented Software", Addison Wesley, 1994, pp. 151ff, [ISBN 0-201-63361-2](https://en.wikipedia.org/wiki/Special:BookSources/0-201-63361-2).
 
 <a name="ref-3">[3]</a> Wikipedia: "Internet Relay Chat", https://en.wikipedia.org/wiki/Internet_Relay_Chat, last visited on Apr. 23, 2020.
+
+<a name="ref-4">[4]</a> .NET Foundation and Contributors: "Prism Library: EventAggregator", https://prismlibrary.com/docs/event-aggregator.html, last visited on May 26, 2020.
