@@ -1,3 +1,5 @@
+using Prism.Events;
+
 namespace kata_gof_pattern_eventaggregator_irc
 {
     public class BillingAppService :
@@ -10,7 +12,9 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public BillingAppService(IEventAggregator eventAggregator, IMessageView messageView)
         {
-            eventAggregator.Subscribe(this);
+            eventAggregator.GetEvent<LoginMessageEvent>().Subscribe(Consume);
+            eventAggregator.GetEvent<LogoutMessageEvent>().Subscribe(Consume);
+            eventAggregator.GetEvent<UserMessageEvent>().Subscribe(Consume);
             _messageView = messageView;
         }
 

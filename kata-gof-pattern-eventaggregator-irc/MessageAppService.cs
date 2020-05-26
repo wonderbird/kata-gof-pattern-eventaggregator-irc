@@ -1,3 +1,5 @@
+using Prism.Events;
+
 namespace kata_gof_pattern_eventaggregator_irc
 {
     public class MessageAppService
@@ -11,7 +13,7 @@ namespace kata_gof_pattern_eventaggregator_irc
 
         public void Send(string message, string from, string to)
         {
-            _eventAggregator.Publish(new UserMessage {From = from, To = to, Message = message});
+            _eventAggregator.GetEvent<UserMessageEvent>().Publish(new UserMessage { From = from, To = to, Message = message });
         }
     }
 }

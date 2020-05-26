@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using kata_gof_pattern_eventaggregator_irc;
 using Moq;
+using Prism.Events;
 using Unity;
 using Xunit;
 
@@ -20,10 +21,10 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
             _messageArgs = new List<string>();
             _messagesMock.Setup(x => x.Add(Capture.In(_messageArgs)));
 
-            _eventAggregator = new EventAggregator();
+            var eventAggregator = new EventAggregator();
             
             _container = new UnityContainer();
-            _container.RegisterInstance<IEventAggregator>(_eventAggregator, InstanceLifetime.Singleton);
+            _container.RegisterInstance<IEventAggregator>(eventAggregator, InstanceLifetime.Singleton);
             _container.RegisterInstance<IMessageView>(_messagesMock.Object, InstanceLifetime.Singleton);
 
             _authService = _container.Resolve<AuthenticationAppService>();
@@ -33,7 +34,6 @@ namespace kata_gof_pattern_eventaggregator_irc_tests
         private readonly DateTime _timestamp;
         private readonly string _timestampString;
         private readonly string _username;
-        private readonly EventAggregator _eventAggregator;
         private readonly AuthenticationAppService _authService;
         private readonly Mock<IMessageView> _messagesMock;
         private readonly MessageAppService _messageService;

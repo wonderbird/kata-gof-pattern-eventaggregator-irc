@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using kata_gof_pattern_eventaggregator_irc;
 using Moq;
+using Prism.Events;
 using Unity;
 using Xunit;
 

@@ -1,4 +1,5 @@
 using System;
+using Prism.Events;
 
 namespace kata_gof_pattern_eventaggregator_irc
 {
@@ -18,7 +19,7 @@ namespace kata_gof_pattern_eventaggregator_irc
                 Username = username,
                 Timestamp = timestamp
             };
-            _eventAggregator.Publish(message);
+            _eventAggregator.GetEvent<LoginMessageEvent>().Publish(message);
         }
 
         public void Logout(string username, DateTime timestamp)
@@ -28,7 +29,7 @@ namespace kata_gof_pattern_eventaggregator_irc
                 Username = username,
                 Timestamp = timestamp
             };
-            _eventAggregator.Publish(message);
+            _eventAggregator.GetEvent<LogoutMessageEvent>().Publish(message);
         }
     }
 }

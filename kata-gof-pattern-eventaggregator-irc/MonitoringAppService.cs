@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Prism.Events;
 
 namespace kata_gof_pattern_eventaggregator_irc
 {
@@ -10,7 +11,8 @@ namespace kata_gof_pattern_eventaggregator_irc
         public MonitoringAppService(IEventAggregator eventAggregator, IMessageView messagesView)
         {
             _messagesView = messagesView;
-            eventAggregator.Subscribe(this);
+            eventAggregator.GetEvent<LoginMessageEvent>().Subscribe(Consume);
+            eventAggregator.GetEvent<LogoutMessageEvent>().Subscribe(Consume);
         }
 
         public void Consume(LoginMessage message)
